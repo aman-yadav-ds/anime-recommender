@@ -5,3 +5,4 @@ artifacts/model/
 artifacts/weights/
 artifacts/model_checkpoints/
 Anime_Recommender.egg-info/
+__pycache__/
