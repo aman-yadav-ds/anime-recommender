@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "Anime-Recommender"
+version = "0.1"
+authors = [
+    { name = "Aman" }
+]
+dependencies = [
+    "pandas",
+    "numpy",
+    "google-cloud-storage",
+    "pyyaml",
+    "tensorflow",
+    "scikit-learn",
+    "comet-ml",
+    "dvc"
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
