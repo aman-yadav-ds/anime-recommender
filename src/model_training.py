@@ -14,7 +14,7 @@ class ModelTraining:
     def __init__(self, data_path):
         self.data_path = data_path
         self.experiment = comet_ml.Experiment(
-            api_key='GCCxNpCIlQPZHj1Iiq2RhHa4Q',
+            api_key=os.getenv('COMET_API_KEY'),
             project_name='anime_recommender',
             workspace='aman-yadav-ds'
         )
