@@ -1,7 +1,13 @@
 import pandas as pd
 import numpy as np
 import joblib
+import requests
 from config.paths_config import *
+from src.logger import get_logger
+
+poster_cache = {}
+
+logger = get_logger(__name__)
 
 ############# 1. GET_ANIME_FRAME
 
@@ -73,8 +79,8 @@ def find_similar_animes(name, path_anime_weights, path_anime2anime_encoded, path
         SimilarityArr.append(row_dict)
     
     Frame = pd.DataFrame(SimilarityArr).sort_values(by="similarity", ascending=False)
-    Frame = Frame.drop(columns=['Type', 'Members', 'similarity'])
-    return Frame[Frame.anime_id != index].drop(['anime_id'], axis=1)
+    Frame = Frame.drop(columns=['Type', 'Members'])
+    return Frame[Frame.anime_id != index]
 
 
 ######## 4. FIND_SIMILAR_USERS
@@ -211,3 +217,38 @@ def getRecommendedAnimeFrame(recommended_animes_names, path_anime_df, path_synop
     recommended_animes_frame = recommended_animes_frame.drop(columns=['Type', 'Members'])
 
     return recommended_animes_frame
+
+def fetch_anime_posters(mal_id):
+    global poster_cache  # reference the global dictionary
+
+    if not isinstance(mal_id, int) or mal_id <= 0:
+        print("Error: MAL_ID must be a positive integer.")
+        return None
+
+    # Check cache before fetching
+    if mal_id in poster_cache:
+        return poster_cache[mal_id]
+    # url = f"https://jikan-rest-aj30.onrender.com/v4/anime/{mal_id}"
+    url = f"https://api.jikan.moe/v4/anime/{mal_id}"
+
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+        data = response.json()
+
+        image_url = data['data']['images']['jpg'].get('large_image_url') or \
+                    data['data']['images']['jpg'].get('image_url')
+
+        # ✅ Save in cache
+        poster_cache[mal_id] = image_url
+
+        return image_url
+
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching data: {e}")
+        poster_cache[mal_id] = None  # cache failed attempt too
+        return None
+    except KeyError:
+        print("Error parsing response.")
+        poster_cache[mal_id] = None
+        return None
