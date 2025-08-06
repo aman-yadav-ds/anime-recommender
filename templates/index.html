@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Anime Recommender System</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="main-title">Anime Recommender System</h1>
+
+        <!-- Input Form -->
+        <form action="/" method="POST" class="input-form">
+            <label for="input_type">Select Input Type:</label>
+            <select id="input_type" name="input_type" required>
+                <option value="user_id">User ID</option>
+                <option value="anime_id">Anime ID</option>
+            </select>
+
+            <label for="input_value">Enter ID:</label>
+            <input type="number" id="input_value" name="input_value" required>
+
+            <button type="submit">Get Recommendations</button>
+        </form>
+
+        <!-- Recommendations -->
+        {% if not recommendations_frame.empty %}
+        <div class="recommendations">
+            <h2>Recommended Anime</h2>
+            <div class="cards-container">
+                {% for _, row in recommendations_frame.iterrows() %}
+                <div class="anime-card">
+                    <h3 class="anime-title">{{ row.eng_version }}</h3>
+                    <p><strong>Score:</strong> {{ row.Score }}</p>
+                    <p><strong>Genres:</strong> {{ row.Genres }}</p>
+                    <p><strong>Episodes:</strong> {{ row.Episodes }}</p>
+                    <p><strong>Members:</strong> {{ row.Members }}</p>
+                    <p><strong>Premiered:</strong> {{ row.Premiered }}</p>
+                    <p class="synopsis"><strong>Synopsis:</strong> {{ row.Synopsis }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

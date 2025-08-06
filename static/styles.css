@@ -1,0 +1,108 @@
+/* styles.css */
+
+/* General styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+/* Title */
+.main-title {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+/* Form styles */
+.input-form {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 40px;
+}
+
+.input-form label {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.input-form input,
+.input-form select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    margin-bottom: 15px;
+}
+
+.input-form button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.input-form button:hover {
+    background-color: #45a049;
+}
+
+/* Recommendations section */
+.recommendations h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Anime card layout */
+.cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.anime-card {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    padding: 20px;
+    width: 300px;
+    transition: transform 0.2s ease-in-out;
+}
+
+.anime-card:hover {
+    transform: scale(1.03);
+}
+
+.anime-title {
+    margin-top: 0;
+    color: #2c3e50;
+    font-size: 1.25em;
+    margin-bottom: 10px;
+}
+
+.anime-card p {
+    margin: 6px 0;
+    color: #555;
+}
+
+.synopsis {
+    margin-top: 10px;
+    font-size: 0.9em;
+    color: #444;
+    max-height: 100px;
+    overflow: auto;
+}

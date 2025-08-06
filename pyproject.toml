@@ -16,7 +16,9 @@ dependencies = [
     "tensorflow",
     "scikit-learn",
     "comet-ml",
-    "dvc"
+    "dvc",
+    "dvc-gs",
+    "flask",
 ]
 
 [tool.setuptools.packages.find]

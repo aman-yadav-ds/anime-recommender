@@ -139,6 +139,7 @@ class DataProcessor:
                 except Exception as e:
                     print("Error:", e)
                 return name
+            
             df["anime_id"] = df["MAL_ID"]
             df["eng_version"] = df["English name"]
 
