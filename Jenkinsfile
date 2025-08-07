@@ -3,6 +3,9 @@ pipeline {
 
     environment {
         VENV_DIR = 'venv'
+        GCP_PROJECT = 'anime-recommender-system'
+        GCLOUD_PATH = "/var/jenkins_home/google-cloud-sdk/bin"
+        KUBECTL_AUTH_PLUGIN = "/usr/lib/google-cloud-sdk/bin"
     }
 
     stages {
@@ -29,14 +32,19 @@ pipeline {
                 }
             }
         }
-        stage("DVC Pull....") {
+        stage("Build and push Image to GCR....") {
             steps {
                 withCredentials([file(credentialsId:'recommender-gcp-key', variable: 'GOOGLE_APPLICATION_CREDENTIALS')]){
                     script {
-                        echo "DVC Pull...."
+                        echo "Building app Image and pushing it to GCR...."
                         sh """
                         . ${VENV_DIR}/bin/activate
-                        dvc pull
+                        export PATH=$PATH:${GCLOUD_PATH}
+                        gcloud auth activate-service-account --key-file=${GOOGLE_APPLICATION_CREDENTIALS}
+                        gcloud config set project ${GCP_PROJECT}
+                        gcloud auth configure-docker --quiet
+                        docker build -t gcr.io/${GCP_PROJECT}/anime-recommender:latest .
+                        docker push gcr.io/${GCP_PROJECT}/anime-recommender:latest
                         """
                     }
                 }
