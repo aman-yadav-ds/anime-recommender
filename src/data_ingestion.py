@@ -30,7 +30,7 @@ class DataIngestion:
                 blob = bucket.blob(file_name)
 
                 if file_name == "animelist.csv":
-                    logger.info("Large File Detected. Directly reading first 8M rows using GCS blob as file-like object...")
+                    logger.info("Large File Detected. Directly reading first 5M rows using GCS blob as file-like object...")
                     # When we are downloading data from gcp bucket we are downloading the whole datasest(2GB) only to 
                     # discard 65M rows which will incur the cost of downloading 2GB of data from the bucket as a single operation.
                     # Let's say this charge(download(2GB)+ One read Operation) is charge_2GB.
@@ -54,11 +54,11 @@ class DataIngestion:
                     # when we containarize our app and use GKE later.
 
                     with blob.open("r", encoding='utf-8') as gcs_file:
-                        data = pd.read_csv(gcs_file, nrows=8_000_000)
+                        data = pd.read_csv(gcs_file, nrows=5_000_000)
                         
                     data.to_csv(file_path, index=False)
 
-                    logger.info(f"Downloaded and saved first 8M rows of '{file_name}' to '{file_path}'.")
+                    logger.info(f"Downloaded and saved first 5M rows of '{file_name}' to '{file_path}'.")
                 else:
                     logger.info(f"Downloading Smaller file {file_name}...")
                     blob.download_to_filename(file_path)

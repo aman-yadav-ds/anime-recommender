@@ -27,7 +27,7 @@ def home():
                 error_message = "No recommendations found for this ID. Please try another."
 
             recommendations_frame['poster_url'] = recommendations_frame['anime_id'].apply(fetch_anime_posters)
-            recommendations_frame.fillna("Not Available in DB.")
+            recommendations_frame = recommendations_frame.fillna("Not Available in DB.")
         except Exception as e:
             print("Error Occured....")
 
@@ -35,7 +35,7 @@ def home():
 
 if __name__=='__main__':
     app.run(
-        debug=True,
+        debug=False,
         host='0.0.0.0',
         port=5000
     )
