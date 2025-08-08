@@ -1,0 +1,23 @@
+stages:
+  train:
+    cmd: python pipeline/training_pipeline.py
+    deps:
+      # Raw data – main trigger for re-running
+      - artifacts/raw
+
+      # Pipeline script
+      - pipeline/training_pipeline.py
+
+      # All code modules it depends on
+      - src/data_ingestion.py
+      - src/data_processing.py
+      - src/model_training.py
+      - utils/common_functions.py
+      - config/paths_config.py
+
+    outs:
+      # All artifacts produced by training
+      - artifacts/processed
+      - artifacts/model
+      - artifacts/model_checkpoints
+      - artifacts/weights

@@ -1,0 +1,50 @@
+schema: '2.0'
+stages:
+  train:
+    cmd: python pipeline/training_pipeline.py
+    deps:
+    - path: artifacts/raw
+      hash: md5
+      md5: 8fa6ea8a6da9adc47c3108d4855ba2ff.dir
+      size: 104148937
+      nfiles: 3
+    - path: config
+      hash: md5
+      md5: 7f6145e4095c3e6fa19bd25492b7e839.dir
+      size: 4214
+      nfiles: 5
+    - path: pipeline/training_pipeline.py
+      hash: md5
+      md5: 14843a57f3ff3dbcd61a41065f9cd235
+      size: 515
+    - path: src
+      hash: md5
+      md5: 5d464a559fe09a92c46bcf9a255c7a7d.dir
+      size: 51198
+      nfiles: 14
+    - path: utils
+      hash: md5
+      md5: 448bc96d1b994b98405d35c073cceae7.dir
+      size: 22657
+      nfiles: 6
+    outs:
+    - path: artifacts/model
+      hash: md5
+      md5: 89f13981c475e460f831f624bc1ff319.dir
+      size: 32833944
+      nfiles: 1
+    - path: artifacts/model_checkpoints
+      hash: md5
+      md5: e0cd186c095e23c910c062dd16b7de51.dir
+      size: 32832888
+      nfiles: 1
+    - path: artifacts/processed
+      hash: md5
+      md5: 30bea8cad3d963ae92e1d3aff05aacb4.dir
+      size: 194629106
+      nfiles: 11
+    - path: artifacts/weights
+      hash: md5
+      md5: bba9c8815a297a1f26ec1670cdd64407.dir
+      size: 10932706
+      nfiles: 2

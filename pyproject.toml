@@ -11,15 +11,21 @@ authors = [
 dependencies = [
     "pandas",
     "numpy",
+]
+
+[project.optional-dependencies]
+deployment = [
+    "flask",
+    "requests",
+    "joblib",
+]
+development = [
     "google-cloud-storage",
     "pyyaml",
     "tensorflow",
     "scikit-learn",
     "comet-ml",
-    "dvc",
-    "dvc-gs",
-    "flask",
-    "requests",
+    "dvc[dvc-gs]"
 ]
 
 [tool.setuptools.packages.find]

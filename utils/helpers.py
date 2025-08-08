@@ -3,11 +3,8 @@ import numpy as np
 import joblib
 import requests
 from config.paths_config import *
-from src.logger import get_logger
 
 poster_cache = {}
-
-logger = get_logger(__name__)
 
 ############# 1. GET_ANIME_FRAME
 

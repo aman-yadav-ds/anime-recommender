@@ -1,0 +1,30 @@
+config/gcp-creds.json
+
+# Ignore DVC cache
+.dvc/cache
+*.lock
+.dvcignore
+
+logs/
+
+# Ignore Python cache
+__pycache__/
+*.pyc
+
+src/
+
+pipeline/training_pipeline.py
+
+venv/
+
+Anime_Recommender.egg-info/
+# Ignore notebooks if not needed
+*.ipynb
+
+LICENSE
+
+README.md
+
+# Ignore git
+.git
+.gitignore

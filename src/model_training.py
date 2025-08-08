@@ -13,11 +13,11 @@ logger = get_logger(__name__)
 class ModelTraining:
     def __init__(self, data_path):
         self.data_path = data_path
-        self.experiment = comet_ml.Experiment(
-            api_key=os.getenv('COMET_API_KEY'),
-            project_name='anime_recommender',
-            workspace='aman-yadav-ds'
-        )
+        # self.experiment = comet_ml.Experiment(
+        #     api_key=os.getenv('COMET_API_KEY'),
+        #     project_name='anime_recommender',
+        #     workspace='aman-yadav-ds'
+        # )
 
         logger.info("Model training and CometML Initialized")
         os.makedirs(os.path.dirname(CHECKPOINT_FILE_PATH), exist_ok=True)
@@ -126,9 +126,9 @@ class ModelTraining:
             joblib.dump(user_weights, USER_WEIGHTS_PATH)
             joblib.dump(anime_weights, ANIME_WEIGHTS_PATH)
 
-            self.experiment.log_asset(MODEL_PATH)
-            self.experiment.log_asset(ANIME_WEIGHTS_PATH)
-            self.experiment.log_asset(USER_WEIGHTS_PATH)
+            # self.experiment.log_asset(MODEL_PATH)
+            # self.experiment.log_asset(ANIME_WEIGHTS_PATH)
+            # self.experiment.log_asset(USER_WEIGHTS_PATH)
 
             logger.info("Anime and User weights saved")
 
