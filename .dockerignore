@@ -1,13 +1,20 @@
-config/gcp-creds.json
-
 # Ignore DVC cache
-.dvc/cache
+.dvc/
 *.lock
 .dvcignore
 
+Jenkinsfile
+
+
+
 logs/
 
-artifacts/model/
+artifacts/raw.dvc
+artifacts/model
+artifacts/processed/X_test_array.pkl
+artifacts/processed/y_test.pkl
+artifacts/processed/X_train_array.pkl
+artifacts/processed/y_train.pkl
 artifacts/model_checkpoints/
 artifacts/raw/
 
@@ -22,8 +29,9 @@ pipeline/training_pipeline.py
 venv/
 
 Anime_Recommender.egg-info/
+
 # Ignore notebooks if not needed
-*.ipynb
+notebook/
 
 LICENSE
 
@@ -31,4 +39,4 @@ README.md
 
 # Ignore git
 .git
-.gitignore
+*.gitignore

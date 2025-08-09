@@ -5,7 +5,7 @@ pipeline {
         VENV_DIR = 'venv'
         GCP_PROJECT = 'anime-recommender-system'
         GCLOUD_PATH = "/var/jenkins_home/google-cloud-sdk/bin"
-        // KUBECTL_AUTH_PLUGIN = "/usr/lib/google-cloud-sdk/bin"
+        KUBECTL_AUTH_PLUGIN = "/usr/lib/google-cloud-sdk/bin"
     }
 
     stages{
@@ -34,11 +34,11 @@ pipeline {
         }
 
 
-        stage('DVC Operations'){
+        stage('DVC Operations & Model Training'){
             steps{
                 withCredentials([file(credentialsId:'recommender-gcp-key' , variable: 'GOOGLE_APPLICATION_CREDENTIALS' )]){
                     script{
-                        echo 'DVC Operations....'
+                        echo 'DVC Operations & Model Training....'
                         sh """
                         . ${VENV_DIR}/bin/activate
                         dvc pull --force
@@ -69,21 +69,21 @@ pipeline {
         }
 
 
-        // stage('Deploying to Kubernetes'){
-        //     steps{
-        //         withCredentials([file(credentialsId:'recommender-gcp-key' , variable: 'GOOGLE_APPLICATION_CREDENTIALS' )]){
-        //             script{
-        //                 echo 'Deploying to Kubernetes'
-        //                 sh '''
-        //                 export PATH=$PATH:${GCLOUD_PATH}:${KUBECTL_AUTH_PLUGIN}
-        //                 gcloud auth activate-service-account --key-file=${GOOGLE_APPLICATION_CREDENTIALS}
-        //                 gcloud config set project ${GCP_PROJECT}
-        //                 gcloud container clusters get-credentials ml-app-cluster --region asia-south1-a
-        //                 kubectl apply -f deployment.yaml
-        //                 '''
-        //             }
-        //         }
-        //     }
-        // }
+        stage('Deploying to Kubernetes'){
+            steps{
+                withCredentials([file(credentialsId:'recommender-gcp-key' , variable: 'GOOGLE_APPLICATION_CREDENTIALS' )]){
+                    script{
+                        echo 'Deploying to Kubernetes'
+                        sh '''
+                        export PATH=$PATH:${GCLOUD_PATH}:${KUBECTL_AUTH_PLUGIN}
+                        gcloud auth activate-service-account --key-file=${GOOGLE_APPLICATION_CREDENTIALS}
+                        gcloud config set project ${GCP_PROJECT}
+                        gcloud container clusters get-credentials anime-recommender-cluster --region asia-south2
+                        kubectl apply -f deployment.yaml
+                        '''
+                    }
+                }
+            }
+        }
     }
 }
