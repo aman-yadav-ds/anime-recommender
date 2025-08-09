@@ -7,6 +7,10 @@ config/gcp-creds.json
 
 logs/
 
+artifacts/model/
+artifacts/model_checkpoints/
+artifacts/raw/
+
 # Ignore Python cache
 __pycache__/
 *.pyc
