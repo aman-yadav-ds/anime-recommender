@@ -78,7 +78,7 @@ pipeline {
         //                 export PATH=$PATH:${GCLOUD_PATH}:${KUBECTL_AUTH_PLUGIN}
         //                 gcloud auth activate-service-account --key-file=${GOOGLE_APPLICATION_CREDENTIALS}
         //                 gcloud config set project ${GCP_PROJECT}
-        //                 gcloud container clusters get-credentials ml-app-cluster --region us-central1
+        //                 gcloud container clusters get-credentials ml-app-cluster --region asia-south1-a
         //                 kubectl apply -f deployment.yaml
         //                 '''
         //             }
