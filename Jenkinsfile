@@ -41,7 +41,7 @@ pipeline {
                         echo 'DVC Operations....'
                         sh """
                         . ${VENV_DIR}/bin/activate
-                        dvc pull
+                        dvc pull --force
                         dvc repro
                         """
                     }
