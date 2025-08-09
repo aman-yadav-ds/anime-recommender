@@ -54,7 +54,7 @@ class DataIngestion:
                     # when we containarize our app and use GKE later.
 
                     with blob.open("r", encoding='utf-8') as gcs_file:
-                        data = pd.read_csv(gcs_file, nrows=5_000_000)
+                        data = pd.read_csv(gcs_file, nrows=1_000_000)
                         
                     data.to_csv(file_path, index=False)
 
