@@ -42,13 +42,7 @@ pipeline {
                         sh """
                         . ${VENV_DIR}/bin/activate
                         dvc pull
-                        if dvc repro --dry: then
-                            echo "Changes detected or missing artifacts, running training"
-                            dvc repro 
-                            dvc push
-                        else
-                            echo "No changes detected, skipping training"
-                        fi 
+                        dvc repro
                         """
                     }
                 }
