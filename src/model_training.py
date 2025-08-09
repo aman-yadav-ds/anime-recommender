@@ -86,12 +86,12 @@ class ModelTraining:
                 model.load_weights(CHECKPOINT_FILE_PATH)
                 logger.info("Model training completed...")
 
-                for epoch in range(len(history.history['loss'])):
-                    train_loss = history.history['loss'][epoch]
-                    val_loss = history.history['val_loss'][epoch]
+                # for epoch in range(len(history.history['loss'])):
+                #     train_loss = history.history['loss'][epoch]
+                #     val_loss = history.history['val_loss'][epoch]
 
-                    self.experiment.log_metric('train_loss', train_loss, step=epoch)
-                    self.experiment.log_metric('val_loss', val_loss, step=epoch)
+                #     self.experiment.log_metric('train_loss', train_loss, step=epoch)
+                #     self.experiment.log_metric('val_loss', val_loss, step=epoch)
 
             except Exception as e:
                 raise CustomException("Model Training failed", e)

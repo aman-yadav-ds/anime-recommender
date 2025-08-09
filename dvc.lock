@@ -5,8 +5,8 @@ stages:
     deps:
     - path: artifacts/raw
       hash: md5
-      md5: 8fa6ea8a6da9adc47c3108d4855ba2ff.dir
-      size: 104148937
+      md5: 8b2b1800c287f9cf7891e6b55fcfa6de.dir
+      size: 160848565
       nfiles: 3
     - path: config/paths_config.py
       hash: md5
@@ -18,7 +18,7 @@ stages:
       size: 515
     - path: src/data_ingestion.py
       hash: md5
-      md5: 3f444fe77404dca47806b9339342eb0f
+      md5: ba5a3fb523adf8c23a7dcf294e7d7486
       size: 3650
     - path: src/data_processing.py
       hash: md5
@@ -26,8 +26,8 @@ stages:
       size: 7018
     - path: src/model_training.py
       hash: md5
-      md5: a787148fe515ced8e2769bf7851b401a
-      size: 5319
+      md5: e64ab568fa12360cb54417473f7f1834
+      size: 5329
     - path: utils/common_functions.py
       hash: md5
       md5: 23b5a4514c7ceec712121b6852fdd290
@@ -35,21 +35,21 @@ stages:
     outs:
     - path: artifacts/model
       hash: md5
-      md5: 89f13981c475e460f831f624bc1ff319.dir
-      size: 32833944
+      md5: a46e44e58dca5a09a2ca4b46b8c8bd57.dir
+      size: 37269912
       nfiles: 1
     - path: artifacts/model_checkpoints
       hash: md5
-      md5: e0cd186c095e23c910c062dd16b7de51.dir
-      size: 32832888
+      md5: 32187f1029a51f1561966ade191e83fa.dir
+      size: 37268856
       nfiles: 1
     - path: artifacts/processed
       hash: md5
-      md5: 30bea8cad3d963ae92e1d3aff05aacb4.dir
-      size: 194629106
+      md5: 039eb0e3c14bc07b6634d82a13e56b56.dir
+      size: 309520337
       nfiles: 11
     - path: artifacts/weights
       hash: md5
-      md5: bba9c8815a297a1f26ec1670cdd64407.dir
-      size: 10932706
+      md5: 6a76f0bed5c648078f6a5e5a80b8c99a.dir
+      size: 12411362
       nfiles: 2
