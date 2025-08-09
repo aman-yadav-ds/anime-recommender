@@ -8,25 +8,30 @@ stages:
       md5: 8fa6ea8a6da9adc47c3108d4855ba2ff.dir
       size: 104148937
       nfiles: 3
-    - path: config
+    - path: config/paths_config.py
       hash: md5
-      md5: 7f6145e4095c3e6fa19bd25492b7e839.dir
-      size: 4214
-      nfiles: 5
+      md5: e73b647c9e62d9f928e78f57927f5ae6
+      size: 1553
     - path: pipeline/training_pipeline.py
       hash: md5
       md5: 14843a57f3ff3dbcd61a41065f9cd235
       size: 515
-    - path: src
+    - path: src/data_ingestion.py
       hash: md5
-      md5: 5d464a559fe09a92c46bcf9a255c7a7d.dir
-      size: 51198
-      nfiles: 14
-    - path: utils
+      md5: 3f444fe77404dca47806b9339342eb0f
+      size: 3650
+    - path: src/data_processing.py
       hash: md5
-      md5: 448bc96d1b994b98405d35c073cceae7.dir
-      size: 22657
-      nfiles: 6
+      md5: 1e0246b63c5d21fb87058fda697f1f11
+      size: 7018
+    - path: src/model_training.py
+      hash: md5
+      md5: a787148fe515ced8e2769bf7851b401a
+      size: 5319
+    - path: utils/common_functions.py
+      hash: md5
+      md5: 23b5a4514c7ceec712121b6852fdd290
+      size: 951
     outs:
     - path: artifacts/model
       hash: md5
