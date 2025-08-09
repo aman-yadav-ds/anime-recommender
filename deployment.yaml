@@ -3,7 +3,7 @@ kind: Deployment
 metadata: 
   name: anime-recommender
 spec:
-  replica: 3
+  replicas: 3
   selector:
     matchLabels:
       app: anime-recommender
@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: anime-recommender
-        image: gcr.io/anime-recommender-system/ml-project:latest
+        image: gcr.io/anime-recommender-system/anime-recommender:latest
         ports:
         - containerPort: 5000
 ---
