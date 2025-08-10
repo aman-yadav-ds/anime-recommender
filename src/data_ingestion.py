@@ -1,6 +1,7 @@
 import os
 import pandas as pd
 from google.cloud import storage
+from typing import Dict
 from src.logger import get_logger
 from src.custom_exception import CustomException
 from config.paths_config import *
@@ -16,59 +17,87 @@ class DataIngestion:
 
         os.makedirs(RAW_DIR, exist_ok=True)
 
-        logger.info("Data Ingestion started...")
-    
-    def download_from_gcp(self):
+        # for protection so they are not used outside of this class
+        self._client = storage.Client()
+        self._bucket = self._client.bucket(self.bucket_name)
+
+        logger.info("Data Ingestion Initialized...")
+
+    def download_from_gcp(self) -> Dict[str, pd.DataFrame]:
+        """
+        Download csv files from GCS bucket
+
+        Args:
+            max_workers: Maximum number of concurrent downloads
+            
+        Returns:
+            Dict mapping file names to their DataFrames
+        """
         try:
             logger.info("Downloading CSV files from Google Bucket....")
 
-            client = storage.Client()
-            bucket = client.bucket(self.bucket_name)
+            dataframes = {}
+
+
 
             for file_name in self.file_names:
                 file_path = os.path.join(RAW_DIR, file_name)
-                blob = bucket.blob(file_name)
+                blob = self._bucket.blob(file_name)
 
                 if file_name == "animelist.csv":
-                    logger.info("Large File Detected. Directly reading first 8M rows using GCS blob as file-like object...")
-                    # When we are downloading data from gcp bucket we are downloading the whole datasest(2GB) only to 
-                    # discard 65M rows which will incur the cost of downloading 2GB of data from the bucket as a single operation.
-                    # Let's say this charge(download(2GB)+ One read Operation) is charge_2GB.
+                    logger.info(f"Streaming Large file for donwload: {file_name} (first 8M rows)")
 
-                    # But if we are to stream the file using the code below:
 
-                    # {Code:}
-                    # blob = bucket.blob(file_name) //animelist.csv here
-                    # with blob.open("r", encoding='utf-8') as gcs_file:
-                    #             data = pd.read_csv(gcs_file, nrows=8_000_000)
-                    # data.to_csv(file_path, index=False)
+                    with blob.open("r", encoding="utf-8") as gcs_file:
+                        data = pd.read_csv(
+                            gcs_file,
+                            nrows=5_000_000,
+                            low_memory=False  #We need speed for this operation rather than saving memory
+                        )
 
-                    # we would only be paying the charge for downloading data of the size equivalent to (5M rows).
-                    # While we will be making many Read HTTP request or you can say read operations.
-                    # The cost for these operation in comparision to downloading the whole 2GB of data will 
-                    # be negligible and lets say this cost(download(5M rows) + (many read operations)) as charge_5M.
+                    data.to_csv(file_path, index=False)
+                    dataframes[file_name] = data
+                    logger.info(f"Saved {len(data)} rows from {file_name} to {file_path}")
 
-                    # Then This charge_5M will be much less than charge_2GB. And additionally we won't have to load
-                    # the full 2GB data into memory like we are doing when we download the 2GB
-                    # data first which will reduce our compute resources. This will also benefit us
-                    # when we containarize our app and use GKE later.
+                else:
+                    logger.info(f"Downloading smaller files {file_name}...")
+
 
                     with blob.open("r", encoding='utf-8') as gcs_file:
-                        data = pd.read_csv(gcs_file, nrows=8_000_000)
-                        
-                    data.to_csv(file_path, index=False)
+                        data = pd.read_csv(
+                            gcs_file,
+                            low_memory=False
+                        )
 
-                    logger.info(f"Downloaded and saved first 8M rows of '{file_name}' to '{file_path}'.")
-                else:
-                    logger.info(f"Downloading Smaller file {file_name}...")
-                    blob.download_to_filename(file_path)
-                    logger.info(f"Downloaded '{file_name}' to '{file_path}'.")
-            
-            logger.info("Data Ingestion Done.")
-        except CustomException as ce:
-            logger.error("Error while downloading data from GCP.")
-            raise CustomException("Custom Exception", str(ce))
+                    data.to_csv(file_path, index=False)
+                    dataframes[file_name] = data
+                    logger.info(f"Saved {len(data)} rows from {file_name} to {file_path}")
+                                
+            logger.info(f"Data Ingestion completed.")
+            return dataframes
+        except Exception as e:
+            logger.error("Error during data ingestion from GCP.")
+            raise CustomException("Data ingestion failed", str(e))
+        
+    def __del__(self):
+        """
+        Clean up resources because we don't want our 
+        storage client open anymore after it has done its work.
+        """
+        if hasattr(self, '_client'):
+            self._client.close()
+
+
+def main():
+
+    config = read_yaml(CONFIG_PATH)
+    ingestor = DataIngestion(config)
+    dataframes = ingestor.download_from_gcp()
+
+    for file_name, df in dataframes.items():
+        print(f"{file_name}: {df.shape}")
+
+    return dataframes
 
 if __name__ == "__main__":
-    ingestor = DataIngestion(read_yaml(CONFIG_PATH))
-    ingestor.download_from_gcp()
+    main()

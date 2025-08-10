@@ -18,10 +18,12 @@ deployment = [
     "flask",
     "requests",
     "joblib",
+    "gunicorn"
 ]
 development = [
     "google-cloud-storage",
     "pyyaml",
+    "tqdm",
     "tensorflow",
     "scikit-learn",
     "comet-ml",

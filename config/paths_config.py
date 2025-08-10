@@ -29,7 +29,7 @@ USER2USER_DECODED = os.path.join(PROCESSED_DIR, "user2user_decoded.pkl")
 #===========================MODEL TRAINING====================================
 MODEL_DIR = "artifacts/model"
 WEIGHTS_DIR = "artifacts/weights"
-MODEL_PATH = os.path.join(MODEL_DIR, "model.h5")
+MODEL_PATH = os.path.join(MODEL_DIR, "model.keras")
 ANIME_WEIGHTS_PATH = os.path.join(WEIGHTS_DIR, "anime_weights.pkl")
 USER_WEIGHTS_PATH = os.path.join(WEIGHTS_DIR, "user_weights.pkl")
 

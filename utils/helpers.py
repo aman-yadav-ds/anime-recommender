@@ -1,8 +1,6 @@
 import pandas as pd
 import numpy as np
-import joblib
 import requests
-from config.paths_config import *
 
 poster_cache = {}
 
@@ -28,15 +26,7 @@ def getSynopsis(id,synopsis_df):
 
 ########## 3. CONTENT RECOMMENDATION
 
-def find_similar_animes(name, path_anime_weights, path_anime2anime_encoded, path_anime2anime_decoded, path_anime_df, path_synopsis_df, n=10, return_dist=False, neg=False):
-    # Load weights and encoded-decoded mappings
-
-    anime_df = pd.read_csv(path_anime_df)
-    synopsis_df = pd.read_csv(path_synopsis_df)
-
-    anime_weights = joblib.load(path_anime_weights)
-    anime2anime_encoded = joblib.load(path_anime2anime_encoded)
-    anime2anime_decoded = joblib.load(path_anime2anime_decoded)
+def find_similar_animes(name, anime_weights, anime2anime_encoded, anime2anime_decoded, anime_df, synopsis_df, n=10, return_dist=False, neg=False):
 
     # Get the anime ID for the given name
     index = getAnimeFrame(name, anime_df).anime_id.values[0]
@@ -66,7 +56,7 @@ def find_similar_animes(name, path_anime_weights, path_anime2anime_encoded, path
     SimilarityArr = []
     for close in closest:
         decoded_id = anime2anime_decoded.get(close)
-        anime_frame = getAnimeFrame(decoded_id, anime_df).iloc[0]
+        anime_frame = getAnimeFrame(int(decoded_id), anime_df).iloc[0]
         synopsis = getSynopsis(int(decoded_id), synopsis_df)
         similarity = dists[close]
 
@@ -83,12 +73,8 @@ def find_similar_animes(name, path_anime_weights, path_anime2anime_encoded, path
 ######## 4. FIND_SIMILAR_USERS
 
 
-def find_similar_users(user_id , path_user_weights , path_user2user_encoded , path_user2user_decoded, n=10 , return_dist=False,neg=False):
+def find_similar_users(user_id , user_weights , user2user_encoded , user2user_decoded, n=10 , return_dist=False,neg=False):
     try:
-
-        user_weights = joblib.load(path_user_weights)
-        user2user_encoded = joblib.load(path_user2user_encoded)
-        user2user_decoded = joblib.load(path_user2user_decoded)
 
         index=user_id
         encoded_index = user2user_encoded.get(index)
@@ -152,11 +138,7 @@ def get_user_preferences(user_id , rating_df , anime_df ):
 ######## 6. USER RECOMMENDATION
 
 
-def get_user_recommendations(user_id, similar_users, path_anime_df , path_synopsis_df, path_rating_df, n=10):
-
-    anime_df = pd.read_csv(path_anime_df)
-    synopsis_df = pd.read_csv(path_synopsis_df)
-    rating_df = pd.read_csv(path_rating_df)
+def get_user_recommendations(user_id, similar_users, anime_df , synopsis_df, rating_df, n=10):
 
     recommended_animes = []
     anime_list = []
@@ -193,9 +175,7 @@ def get_user_recommendations(user_id, similar_users, path_anime_df , path_synops
                     })
     return pd.DataFrame(recommended_animes).head(n)
 
-def getRecommendedAnimeFrame(recommended_animes_names, path_anime_df, path_synopsis_df):
-    anime_df = pd.read_csv(path_anime_df)
-    synopsis_df = pd.read_csv(path_synopsis_df)
+def getRecommendedAnimeFrame(recommended_animes_names, anime_df, synopsis_df):
 
     recommended_anime_rows = []
     for anime_name in recommended_animes_names:
@@ -216,7 +196,7 @@ def getRecommendedAnimeFrame(recommended_animes_names, path_anime_df, path_synop
     return recommended_animes_frame
 
 def fetch_anime_posters(mal_id):
-    global poster_cache  # reference the global dictionary
+    global poster_cache
 
     if not isinstance(mal_id, int) or mal_id <= 0:
         print("Error: MAL_ID must be a positive integer.")

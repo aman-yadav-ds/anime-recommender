@@ -7,6 +7,5 @@ data_ingestion:
 model:
   embedding_size: 128
   loss: binary_crossentropy
-  optimizer: Adam
-  metrics: ["mae", "mse"]
+  metrics: ['accuracy', 'Precision', 'Recall', 'AUC']
   

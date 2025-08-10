@@ -24,5 +24,5 @@ COPY --from=builder /usr/local /usr/local
 # Copy only necessary app files
 COPY . .
 
-EXPOSE 5000
-CMD ["python", "application.py"]
+EXPOSE 10000
+CMD ["gunicorn", "--bind", "0.0.0.0:10000", "application:app"]

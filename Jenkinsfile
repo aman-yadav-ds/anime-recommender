@@ -36,14 +36,18 @@ pipeline {
 
         stage('DVC Operations & Model Training'){
             steps{
-                withCredentials([file(credentialsId:'recommender-gcp-key' , variable: 'GOOGLE_APPLICATION_CREDENTIALS' )]){
+                withCredentials([
+                    file(credentialsId:'recommender-gcp-key' , variable: 'GOOGLE_APPLICATION_CREDENTIALS'), 
+                    string(credentialsId: 'comitml-secret-key', variable: 'COMET_API_KEY')
+                ]){
                     script{
                         echo 'DVC Operations & Model Training....'
-                        sh """
+                        sh '''
                         . ${VENV_DIR}/bin/activate
                         dvc pull --force
+                        export COMET_API_KEY=${COMET_API_KEY}
                         dvc repro
-                        """
+                        '''
                     }
                 }
             }
