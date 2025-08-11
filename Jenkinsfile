@@ -44,9 +44,13 @@ pipeline {
                         echo 'DVC Operations & Model Training....'
                         sh '''
                         . ${VENV_DIR}/bin/activate
-                        dvc pull --force
                         export COMET_API_KEY=${COMET_API_KEY}
-                        dvc repro
+                        
+                        python src/data_ingestion.py
+                        if ! dvc status -q; then
+                            dvc repro
+                            dvc push --force
+                        fi
                         '''
                     }
                 }

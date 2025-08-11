@@ -1,13 +1,9 @@
 from flask import Flask, render_template, request
 from pipeline.prediction_pipeline import hybrid_recommendation, get_anime_recommendations
 from utils.helpers import fetch_anime_posters
-from src.logger import get_logger
-from src.custom_exception import CustomException
 import pandas as pd
 
 poster_cache = {}
-
-logger = get_logger(__name__)
 
 app = Flask(__name__)
 
@@ -33,8 +29,7 @@ def home():
             recommendations_frame['poster_url'] = recommendations_frame['anime_id'].apply(fetch_anime_posters)
             recommendations_frame = recommendations_frame.fillna("Not Available in DB.")
         except Exception as e:
-            logger.error(f"Error Occured {str(e)}")
-            raise CustomException("Error Occured....", str(e))
+            raise Exception("Error Occured....", str(e))
 
     return render_template('index.html', recommendations_frame=recommendations_frame, error_message=error_message)
 

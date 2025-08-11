@@ -5,10 +5,21 @@ A production-ready machine learning recommendation system that provides personal
 ## 🏗️ Architecture Overview
 
 ```
-[Jenkins] ---> [DVC pull check & DVC repro] ---> [Pipeline Docker Image Build & Run] ---> [Artifacts in GCS or PersistentVolume]
-                                                                |
-                                                                v
-                                                        [Webapp Docker Image Build] ---> [Deploy to GKE]
+                        [Jenkins]
+                            |
+                            v
+                [Ingest Data from GCS Bucket] 
+                            |
+                            v
+                [DVC status check & DVC repro] ---> [Training Pipeline] ---> [Docker push artifacts in GCS ]
+                            |                                                                |
+                            v                                                                |
+                [Pipeline Docker Image Build] <----------------------------------------------┛
+                            |
+                            v
+                    [Deploy to GKE]
+                    
+                                                        
 ```
 
 ## 🚀 Key Features

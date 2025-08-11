@@ -201,12 +201,9 @@ class ModelTraining:
             if self.experiment:
                 self._log_training_metrics(history)
             
-            training_results = self.save_model_and_weights(model)
-            training_results['history'] = history.history
-            training_results['model'] = model
+            self.save_model_and_weights(model)
             
             logger.info("Training pipeline completed successfully")
-            return training_results
             
         except Exception as e:
             logger.error(f"Model training failed: {str(e)}")
@@ -255,7 +252,7 @@ class ModelTraining:
             logger.error(f"Failed to extract weights for {layer_name}: {str(e)}")
             raise CustomException(f"Weight extraction failed for {layer_name}", str(e))
     
-    def save_model_and_weights(self, model) -> Dict[str, Any]:
+    def save_model_and_weights(self, model):
         """
         Save model and extract embedding weights
         
@@ -281,14 +278,6 @@ class ModelTraining:
                 self.experiment.log_asset(ANIME_WEIGHTS_PATH)
             
             logger.info("Model and embedding weights saved successfully")
-            
-            return {
-                'model_path': MODEL_PATH,
-                'user_weights': user_weights,
-                'anime_weights': anime_weights,
-                'user_weights_path': USER_WEIGHTS_PATH,
-                'anime_weights_path': ANIME_WEIGHTS_PATH
-            }
             
         except Exception as e:
             logger.error(f"Failed to save model and weights: {str(e)}")
