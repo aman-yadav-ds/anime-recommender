@@ -1,4 +1,5 @@
-stages: 
+stages:
+  # skips ingestion stage and save runtime if raw and ingestion code didn't change
   ingest:
     cmd: python src/data_ingestion.py
     deps:

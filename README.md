@@ -17,9 +17,7 @@ A production-ready machine learning recommendation system that provides personal
                 [Pipeline Docker Image Build] <----------------------------------------------┛
                             |
                             v
-                    [Deploy to GKE]
-                    
-                                                        
+                    [Deploy to GKE]                                                
 ```
 
 ## 🚀 Key Features
