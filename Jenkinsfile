@@ -46,7 +46,10 @@ pipeline {
                         . ${VENV_DIR}/bin/activate
                         export COMET_API_KEY=${COMET_API_KEY}
                         
-                        python src/data_ingestion.py
+                        # Always pull the latest tracked outputs from GCS
+                        dvc pull --force
+
+                        # If anything is outdated, re-run pipeline and push new results
                         if ! dvc status -q; then
                             dvc repro
                             dvc push --force
