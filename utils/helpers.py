@@ -1,7 +1,12 @@
 import pandas as pd
 import numpy as np
+import os
+import json
+import time
 import requests
+import logging
 
+logger = logging.getLogger(__name__)
 poster_cache = {}
 
 ############# 1. GET_ANIME_FRAME
@@ -195,37 +200,55 @@ def getRecommendedAnimeFrame(recommended_animes_names, anime_df, synopsis_df):
 
     return recommended_animes_frame
 
+CACHE_FILE = "/tmp/poster_cache.json"
+DEFAULT_POSTER = "/static/default-poster.png"
+
+if os.path.exists(CACHE_FILE):
+    try:
+        with open(CACHE_FILE, "r") as f:
+            poster_cache = json.load(f)
+    except json.JSONDecodeError:
+        poster_cache = {}
+else:
+    poster_cache = {}
+
+def save_cache():
+    try:
+        with open(CACHE_FILE, "w") as f:
+            json.dump(poster_cache, f)
+    except OSError as e:
+        print(f"⚠️ Failed to save cache: {e}")
+
 def fetch_anime_posters(mal_id):
     global poster_cache
 
     if not isinstance(mal_id, int) or mal_id <= 0:
-        print("Error: MAL_ID must be a positive integer.")
-        return None
+        return DEFAULT_POSTER
 
-    # Check cache before fetching
-    if mal_id in poster_cache:
-        return poster_cache[mal_id]
-    # url = f"https://jikan-rest-aj30.onrender.com/v4/anime/{mal_id}"
+    if str(mal_id) in poster_cache:
+        return poster_cache[str(mal_id)]
+
     url = f"https://api.jikan.moe/v4/anime/{mal_id}"
 
-    try:
-        response = requests.get(url)
-        response.raise_for_status()
-        data = response.json()
+    for attempt in range(3):
+        try:
+            response = requests.get(url, timeout=5)
+            response.raise_for_status()
+            data = response.json()
+            image_url = (
+                data["data"]["images"]["jpg"].get("large_image_url")
+                or data["data"]["images"]["jpg"].get("image_url")
+            )
+            if image_url:
+                image_url = image_url.replace("http://", "https://")
+                poster_cache[str(mal_id)] = image_url
+                save_cache()
+                return image_url
+        except requests.exceptions.RequestException as e:
+            print(f"Attempt {attempt+1} failed for MAL {mal_id}: {e}")
+            if attempt < 2:
+                time.sleep(1)
 
-        image_url = data['data']['images']['jpg'].get('large_image_url') or \
-                    data['data']['images']['jpg'].get('image_url')
-
-        # ✅ Save in cache
-        poster_cache[mal_id] = image_url
-
-        return image_url
-
-    except requests.exceptions.RequestException as e:
-        print(f"Error fetching data: {e}")
-        poster_cache[mal_id] = None  # cache failed attempt too
-        return None
-    except KeyError:
-        print("Error parsing response.")
-        poster_cache[mal_id] = None
-        return None
+    poster_cache[str(mal_id)] = DEFAULT_POSTER
+    save_cache()
+    return DEFAULT_POSTER
