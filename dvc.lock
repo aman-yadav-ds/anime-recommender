@@ -14,8 +14,8 @@ stages:
       size: 1556
     - path: pipeline/training_pipeline.py
       hash: md5
-      md5: 6ebf07cc4970853c84554595a2051f94
-      size: 586
+      md5: afdae78964ea0bc7a4398b88d43c38bb
+      size: 509
     - path: src/data_ingestion.py
       hash: md5
       md5: 26cfe7f590809eabf015103e69f56601
@@ -26,7 +26,7 @@ stages:
       size: 14135
     - path: src/model_training.py
       hash: md5
-      md5: 2b3b4ae00c25ee69c4877e55c588d452
+      md5: 9c57585137d17294bfdb0bc1df9f59d5
       size: 11582
     - path: utils/common_functions.py
       hash: md5
@@ -53,3 +53,16 @@ stages:
       md5: 22894891a65d07f8e6cf014e3c5e00fa.dir
       size: 16561122
       nfiles: 2
+  ingest:
+    cmd: python src/data_ingestion.py
+    deps:
+    - path: src/data_ingestion.py
+      hash: md5
+      md5: 26cfe7f590809eabf015103e69f56601
+      size: 3443
+    outs:
+    - path: artifacts/raw
+      hash: md5
+      md5: 39823ffb0e474359c40da2af78696219.dir
+      size: 104182715
+      nfiles: 3

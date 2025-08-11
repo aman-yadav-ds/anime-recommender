@@ -1,4 +1,10 @@
-stages:
+stages: 
+  ingest:
+    cmd: python src/data_ingestion.py
+    deps:
+      - src/data_ingestion.py
+    outs:
+      - artifacts/raw
   train:
     cmd: python pipeline/training_pipeline.py
     deps:
