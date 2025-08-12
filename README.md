@@ -3,7 +3,7 @@
 A production-ready machine learning recommendation system that provides personalized anime recommendations using collaborative filtering and content-based approaches. Built with modern MLOps practices and deployed on Google Cloud Platform. 
 
 ### IMP Note 
-- For Local development, We are following the below but for Production we will Deploy our Jenkins in a Google Cloud VM and set up all these step via the Jenkinsfile so the pipeline Runs Effectively. I deleted my VM for jenkins because I made this to showcase my tech stack and skills while using the free credits of GCP and I don't have enough money to keep that running. Also I deleted everything from the Google Cloud But I hosted the Docker Image in Hugging Face You can visit [Anime Recommender]("https://huggingface.co/spaces/aman-yadav-ds/anime-recommender").
+- For Local development, We are following the below but for Production we will Deploy our Jenkins in a Google Cloud VM and set up all these step via the Jenkinsfile so the pipeline Runs Effectively. I deleted my VM for jenkins because I made this to showcase my tech stack and skills while using the free credits of GCP and I don't have enough money to keep that running. Also I deleted everything from the Google Cloud But I hosted the Docker Image in Hugging Face You can visit [Anime Recommender](https://huggingface.co/spaces/aman-yadav-ds/anime-recommender).
 
 ## 🏗️ Architecture Overview
 
@@ -119,6 +119,7 @@ checkpoint = ModelCheckpoint(
 
 #### Model Architecture
 ```mermaid
+graph TD;
     A[User ID Input<br/>Shape: (1)] --> B[User Embedding<br/>Input Dim: n_users<br/>Output Dim: embedding_size<br/>L2 Reg: 1e-6]
     C[Anime ID Input<br/>Shape: (1)] --> D[Anime Embedding<br/>Input Dim: n_anime<br/>Output Dim: embedding_size<br/>L2 Reg: 1e-6]
     B --> E[Dot Product<br/>Normalize=True<br/>Axes=2]
@@ -438,5 +439,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 
 *This project demonstrates production-ready ML engineering with modern cloud-native practices, optimized CI/CD pipelines, and scalable architecture suitable for enterprise environments.*
+
 
 
