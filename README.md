@@ -120,15 +120,15 @@ checkpoint = ModelCheckpoint(
 #### Model Architecture
 ```mermaid
 graph TD;
-    A[User ID Input] --> B[User Embedding<br/>Input Dim: n_users<br/>Output Dim: embedding_size<br/>L2 Reg: 1e-6]
-    C[Anime ID Input] --> D[Anime Embedding<br/>Input Dim: n_anime<br/>Output Dim: embedding_size<br/>L2 Reg: 1e-6]
-    B --> E[Dot Product<br/>Normalize=True<br/>Axes=2]
+    A[User ID Input] --> B[User Embedding Layer]
+    C[Anime ID Input] --> D[Anime Embedding Layer]
+    B --> E[Dot Product/ Cosine Similarity]
     D --> E
     E --> F[Flatten]
-    F --> G[Dense(1)<br/>Kernel Init: he_normal]
+    F --> G[Dense]
     G --> H[Batch Normalization]
     H --> I[Activation(sigmoid)]
-    I --> J[Output Prediction<br/>Range: 0–1]
+    I --> J[Output Prediction]
 ```
 
 ### 4. Model Serving
@@ -439,6 +439,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 
 *This project demonstrates production-ready ML engineering with modern cloud-native practices, optimized CI/CD pipelines, and scalable architecture suitable for enterprise environments.*
+
 
 
 
