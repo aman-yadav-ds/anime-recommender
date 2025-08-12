@@ -381,15 +381,15 @@ anime-recommender/
 
 ```mermaid
 graph TD
-    A[Code Commit] → B[Jenkins Trigger]
-    B → C[Data Validation]
-    C → D[Model Training]
-    D → E[Model Evaluation]
-    E → F[Artifact Storage GCS]
-    F → G[Docker Build Web App]
-    G → H[Push to Artifact Registry]
-    H → I[Deploy to GKE]
-    I → J[Production Ready]
+    A[Code Commit] --> B[Jenkins Trigger]
+    B --> C[Data Validation]
+    C --> D[Model Training]
+    D --> E[Model Evaluation]
+    E --> F[Artifact Storage GCS]
+    F --> G[Docker Build Web App]
+    G --> H[Push to Artifact Registry]
+    H --> I[Deploy to GKE]
+    I --> J[Production Ready]
 ```
 
 ## 🔐 Security & Best Practices
@@ -439,6 +439,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 
 *This project demonstrates production-ready ML engineering with modern cloud-native practices, optimized CI/CD pipelines, and scalable architecture suitable for enterprise environments.*
+
 
 
 
