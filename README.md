@@ -127,7 +127,7 @@ graph TD;
     E --> F[Flatten]
     F --> G[Dense]
     G --> H[Batch Normalization]
-    H --> I[Activation(sigmoid)]
+    H --> I[Sigmoid Activation]
     I --> J[Output Prediction]
 ```
 
@@ -439,6 +439,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 
 *This project demonstrates production-ready ML engineering with modern cloud-native practices, optimized CI/CD pipelines, and scalable architecture suitable for enterprise environments.*
+
 
 
 
