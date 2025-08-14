@@ -1,6 +1,6 @@
 # 🎌 Anime Recommender System
 
-A production-ready machine learning recommendation system that provides personalized anime recommendations using collaborative filtering and content-based approaches. Built with modern MLOps practices and deployed on Google Cloud Platform. 
+A production-ready machine learning recommendation system that provides personalized anime recommendations using collaborative filtering and content-based approaches. Built with modern MLOps practices and deployed on Google Cloud Platform.  
 
 ### IMP Note 
 - For Local development, We are following the below but for Production we will Deploy our Jenkins in a Google Cloud VM and set up all these step via the Jenkinsfile so the pipeline Runs Effectively. I deleted my VM for jenkins because I made this to showcase my tech stack and skills while using the free credits of GCP and I don't have enough money to keep that running. Also I deleted everything from the Google Cloud But I hosted the Docker Image in Hugging Face You can visit [Anime Recommender](https://huggingface.co/spaces/aman-yadav-ds/anime-recommender).
