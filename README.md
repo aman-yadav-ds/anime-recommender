@@ -1,23 +1,26 @@
 # 🎌 Anime Recommender System
 
-A production-ready machine learning recommendation system that provides personalized anime recommendations using collaborative filtering and content-based approaches. Built with modern MLOps practices and deployed on Google Cloud Platform.
+A production-ready machine learning recommendation system that provides personalized anime recommendations using collaborative filtering and content-based approaches. Built with modern MLOps practices and deployed on Google Cloud Platform. 
+
+### IMP Note 
+- For Local development, We are following the below but for Production we will Deploy our Jenkins in a Google Cloud VM and set up all these step via the Jenkinsfile so the pipeline Runs Effectively. I deleted my VM for jenkins because I made this to showcase my tech stack and skills while using the free credits of GCP and I don't have enough money to keep that running. Also I deleted everything from the Google Cloud But I hosted the Docker Image in Hugging Face You can visit [Anime Recommender](https://huggingface.co/spaces/aman-yadav-ds/anime-recommender).
 
 ## 🏗️ Architecture Overview
 
 ```
-                        [Jenkins]
-                            |
-                            v
-                [Ingest Data from GCS Bucket] 
-                            |
-                            v
-                [DVC status check & DVC repro] ---> [Training Pipeline] ---> [Docker push artifacts in GCS ]
-                            |                                                                |
-                            v                                                                |
-                [Pipeline Docker Image Build] <----------------------------------------------┛
-                            |
-                            v
-                    [Deploy to GKE]                                                
+          [Jenkins]
+              |
+              v
+  [Ingest Data from GCS Bucket] 
+              |
+              v
+  [DVC status check & DVC repro] ---> [Training Pipeline] ---> [Docker push artifacts in GCS ]
+              |                                                                |
+              v                                                                |
+  [Pipeline Docker Image Build] <----------------------------------------------┛
+              |
+              v
+      [Deploy to GKE]                                                
 ```
 
 ## 🚀 Key Features
@@ -115,17 +118,17 @@ checkpoint = ModelCheckpoint(
 ```
 
 #### Model Architecture
-```
-graph TD
-    A[User ID Input<br/>Shape: (1)] --> B[User Embedding<br/>Input Dim: n_users<br/>Output Dim: embedding_size<br/>L2 Reg: 1e-6]
-    C[Anime ID Input<br/>Shape: (1)] --> D[Anime Embedding<br/>Input Dim: n_anime<br/>Output Dim: embedding_size<br/>L2 Reg: 1e-6]
-    B --> E[Dot Product<br/>Normalize=True<br/>Axes=2]
+```mermaid
+graph TD;
+    A[User ID Input] --> B[User Embedding Layer]
+    C[Anime ID Input] --> D[Anime Embedding Layer]
+    B --> E[Dot Product/ Cosine Similarity]
     D --> E
     E --> F[Flatten]
-    F --> G[Dense(1)<br/>Kernel Init: he_normal]
+    F --> G[Dense]
     G --> H[Batch Normalization]
-    H --> I[Activation(sigmoid)]
-    I --> J[Output Prediction<br/>Range: 0–1]
+    H --> I[Sigmoid Activation]
+    I --> J[Output Prediction]
 ```
 
 ### 4. Model Serving
@@ -163,11 +166,17 @@ def fetch_anime_posters(mal_id):
 
 **Serving Flow**:
 ```
-Saved User Embeddings + Saved Anime Embeddings
-      ↓
-Similarity Computation
-      ↓
-Top-N Recommendations
+User Based Recommendations                       Content based recommendations
+    User ID                                               Anime ID
+Saved User Embeddings            |------------------Saved Anime Embeddings 
+      ↓                          |                            ↓                                            
+Similar Users                    |                     Similar Anime
+      ↓                          |                            |
+Anime Users Rated highly         |                            |
+      ↓                          |                            |
+Similar Anime <-------------------                            |
+      ↓                                                       |
+Top-N Recommendations  <---------------------------------------
       ↓
 API Response
 ```
@@ -252,6 +261,9 @@ CMD ["gunicorn", "--bind", "0.0.0.0:10000", "application:app"]
 - Google Cloud SDK
 - kubectl
 ```
+
+### **Local Development**
+
 - Make sure you have uploaded the csvs from [Dataset]("https://www.kaggle.com/datasets/hernan4444/anime-recommendation-database-2020") into a GCS bucket and have a sevice account made with (Storage Admin) and (Storage Object Viewer) roles. and then download the json file and set the env variable
 
 ```bash
@@ -271,7 +283,6 @@ data_ingestion:
     - "animelist.csv"
 ```
 
-### **Local Development**
 ```bash
 # Clone repository
 git clone https://github.com/aman-yadav-ds/anime-recommender.git
@@ -370,15 +381,15 @@ anime-recommender/
 
 ```mermaid
 graph TD
-    A[Code Commit] → B[Jenkins Trigger]
-    B → C[Data Validation]
-    C → D[Model Training]
-    D → E[Model Evaluation]
-    E → F[Artifact Storage GCS]
-    F → G[Docker Build Web App]
-    G → H[Push to Artifact Registry]
-    H → I[Deploy to GKE]
-    I → J[Production Ready]
+    A[Code Commit] --> B[Jenkins Trigger]
+    B --> C[Data Validation]
+    C --> D[Model Training]
+    D --> E[Model Evaluation]
+    E --> F[Artifact Storage GCS]
+    F --> G[Docker Build Web App]
+    G --> H[Push to Artifact Registry]
+    H --> I[Deploy to GKE]
+    I --> J[Production Ready]
 ```
 
 ## 🔐 Security & Best Practices
@@ -425,5 +436,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 ⭐ **Star this repository if you found it helpful!**
+
 
 *This project demonstrates production-ready ML engineering with modern cloud-native practices, optimized CI/CD pipelines, and scalable architecture suitable for enterprise environments.*
